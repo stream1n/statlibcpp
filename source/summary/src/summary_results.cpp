@@ -1,12 +1,8 @@
 #include "summary_results.h"
-#include <numeric>
+#include <math.h>
 
 namespace statlib {
     namespace summaries {
-
-        double calc_mean(const std::vector<int> nums) {
-            return std::accumulate(nums.begin(), nums.end(), 0) / static_cast<double>(nums.size());
-        }
 
         double calc_median(const std::vector<int> nums) {
             std::vector<int> _nums(nums);
@@ -22,12 +18,32 @@ namespace statlib {
 
         }
 
+        std::vector<double> calc_squared_diffs(const std::vector<int> nums, double mean) {
+            std::vector<double> squared_diffs(nums.size());
+
+            double count = 0;
+            for( auto it : nums ) {
+                double squared_diff = (it - mean) * (it - mean);
+                squared_diffs[count++] = squared_diff;
+            }
+
+            return squared_diffs;
+        }
+
         SummaryStatistics mean(const std::vector<int> nums) {
-            return SummaryStatistics::SummaryStatisticsBuilder().mean(calc_mean(nums)).Build();
+            return SummaryStatistics::SummaryStatisticsBuilder().mean(calc_mean<int>(nums)).Build();
         }
 
         SummaryStatistics median(const std::vector<int> nums) {
             return SummaryStatistics::SummaryStatisticsBuilder().median(calc_median(nums)).Build();
+        }
+
+        SummaryStatistics standard_deviation(const std::vector<int> nums) {
+            double mean = calc_mean<int>(nums);
+            std::vector<double> squared_diffs = calc_squared_diffs(nums, mean);
+            double mean_squared_diffs = calc_mean<double>(squared_diffs);
+            double std_dev = sqrt(mean_squared_diffs);
+            return SummaryStatistics::SummaryStatisticsBuilder().mean(mean).standard_deviation(std_dev).Build();
         }
     }
 }

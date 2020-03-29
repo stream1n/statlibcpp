@@ -2,7 +2,7 @@
 #define STATLIBCPP_SUMMARY_RESULTS_H
 
 #include <vector>
-
+#include <numeric>
 
 namespace statlib {
     namespace summaries {
@@ -31,13 +31,21 @@ namespace statlib {
 
             public:
                 double getMean() const { return mean; }
+
                 double getMedian() const { return median; }
+
                 double getMode() const { return mode; }
+
                 double getWeightedMean() const { return weighted_mean; }
+
                 double getFirstQuartile() const { return first_quartile; }
+
                 double getSecondQuartile() const { return second_quartile; }
+
                 double getThirdQuartile() const { return third_quartile; }
+
                 double getInterQuartileRange() const { return inter_quartile_range; }
+
                 double getStandardDeviation() const { return standard_deviation; }
             };
 
@@ -113,13 +121,23 @@ namespace statlib {
             SummaryStatisticsProperties properties;
 
         public:
-            SummaryStatisticsProperties getProperties() const { return this->properties;}
+            SummaryStatisticsProperties getProperties() const { return this->properties; }
         };
 
-        double calc_mean(const std::vector<int>);
+        template<class T>
+        double calc_mean(const std::vector<T> nums) {
+            return std::accumulate(nums.begin(), nums.end(), 0.) / nums.size();
+        }
+
         double calc_median(const std::vector<int>);
+
+        std::vector<double> calc_squared_diffs(const std::vector<int>, double);
+
         SummaryStatistics mean(const std::vector<int>);
+
         SummaryStatistics median(const std::vector<int>);
+
+        SummaryStatistics standard_deviation(const std::vector<int>);
 
     }
 }
