@@ -18,16 +18,11 @@ namespace statlib {
 
         }
 
-        std::vector<double> calc_squared_diffs(const std::vector<int> nums, double mean) {
-            std::vector<double> squared_diffs(nums.size());
-
-            double count = 0;
-            for( auto it : nums ) {
-                double squared_diff = (it - mean) * (it - mean);
-                squared_diffs[count++] = squared_diff;
-            }
-
-            return squared_diffs;
+        double calc_standard_deviation(const std::vector<int> nums, double mean) {
+            std::vector<double> diffs(nums.size());
+            std::transform(nums.begin(), nums.end(), diffs.begin(), [mean](double x){ return x - mean;});
+            double squared_diffs = std::inner_product(diffs.begin(), diffs.end(), diffs.begin(), 0.);
+            return sqrt(squared_diffs / nums.size());
         }
 
         SummaryStatistics mean(const std::vector<int> nums) {
@@ -40,10 +35,8 @@ namespace statlib {
 
         SummaryStatistics standard_deviation(const std::vector<int> nums) {
             double mean = calc_mean<int>(nums);
-            std::vector<double> squared_diffs = calc_squared_diffs(nums, mean);
-            double mean_squared_diffs = calc_mean<double>(squared_diffs);
-            double std_dev = sqrt(mean_squared_diffs);
-            return SummaryStatistics::SummaryStatisticsBuilder().mean(mean).standard_deviation(std_dev).Build();
+            double stdev = calc_standard_deviation(nums, mean);
+            return SummaryStatistics::SummaryStatisticsBuilder().mean(mean).standard_deviation(stdev).Build();
         }
     }
 }

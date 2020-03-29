@@ -131,7 +131,7 @@ namespace statlib {
 
         double calc_median(const std::vector<int>);
 
-        std::vector<double> calc_squared_diffs(const std::vector<int>, double);
+        double calc_standard_deviation(const std::vector<int>, double);
 
         SummaryStatistics mean(const std::vector<int>);
 

@@ -5,8 +5,6 @@ const std::vector<int> vec_even = {9, 2, 1, 4, 5, 8, 6, 7, 3, 10};
 
 const std::vector<int> vec_odd = {9, 2, 1, 4, 5, 8, 11, 6, 7, 3, 10};
 
-//const std::vector<int> std_dev = {10, 40, 30, 50, 20};
-
 const std::vector<int> std_dev = {64630, 11735, 14216, 99233, 14470, 4978, 73429, 38120, 51135, 67060};
 
 TEST(SummaryStatisticsTestSuite, SummaryStatisticsTestSuite_Sumean_Test){
